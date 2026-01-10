@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zapato Kicks | Nigeria's #1 Luxury Sneaker Destination</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bg: #000000; --accent: #c5a059; --gray: #111; --text: #fff; 
+            --soft-text: #a0a0a0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        /* --- Global Elements --- */
+        .logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; letter-spacing: -1px; text-decoration: none; color: #fff; z-index: 1001; }
+        .logo span { color: var(--accent); }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 25px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 25px; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+        /* --- Hero Slider --- */
+        .hero {
+            height: 100vh; width: 100%; position: relative;
+            display: flex; align-items: center; overflow: hidden;
+        }
+        .slide {
+            position: absolute; inset: 0; opacity: 0; transition: 1.5s ease;
+            display: flex; align-items: center; padding: 0 7%;
+        }
+        .slide.active { opacity: 1; }
+
+        .slide-content { z-index: 5; max-width: 700px; }
+        .slide-tag { color: var(--accent); font-weight: 800; letter-spacing: 4px; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .slide-content h1 { font-family: 'Syne'; font-size: clamp(3rem, 10vw, 7rem); line-height: 0.9; margin-bottom: 30px; }
+        
+        .slide-img {
+            position: absolute; right: 5%; width: 45%; 
+            filter: drop-shadow(0 30px 50px rgba(197, 160, 89, 0.2));
+            transform: translateX(100px); transition: 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .slide.active .slide-img { transform: translateX(0) rotate(-5deg); }
+
+        .btn-gold { 
+            padding: 18px 40px; background: var(--accent); color: #000; 
+            text-decoration: none; font-weight: 800; border-radius: 4px; 
+            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
+        }
+
+        /* --- Nigeria Trust Section --- */
+        .trust-bar {
+            background: var(--gray); display: flex; justify-content: space-around;
+            padding: 40px 5%; border-top: 1px solid #222; border-bottom: 1px solid #222;
+        }
+        .trust-item { text-align: center; }
+        .trust-item h4 { font-family: 'Syne'; color: var(--accent); font-size: 1.2rem; }
+        .trust-item p { font-size: 0.7rem; color: var(--soft-text); text-transform: uppercase; margin-top: 5px; }
+
+        /* --- Featured --- */
+        .featured { padding: 100px 7%; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 50px; }
+        .f-card { 
+            height: 500px; background: #080808; border-radius: 2px; border: 1px solid #1a1a1a;
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+        .f-card img { width: 70%; transition: 0.8s; }
+        .f-card:hover img { transform: scale(1.1); }
+        .f-card h3 { position: absolute; bottom: 30px; left: 30px; font-family: 'Syne'; font-size: 2rem; }
+
+        /* --- Story --- */
+        .story { padding: 100px 7%; background: #050505; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .story img { width: 100%; filter: grayscale(1); border-radius: 4px; }
+        .story-text h2 { font-family: 'Syne'; font-size: 3.5rem; margin-bottom: 30px; }
+        .story-text p { color: var(--soft-text); line-height: 1.8; margin-bottom: 20px; }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 900px) {
+            .slide-img { display: none; }
+            .grid, .story { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .trust-bar { flex-direction: column; gap: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo" id="logo">ZAPATO<span>KICKS</span></a>
+        <div class="nav-links">
+            <a href="shop.html">Shop</a>
+            <a href="#featured">Featured</a>
+            <a href="shop.html">Cart</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="slide active">
+            <div class="slide-content">
+                <span class="slide-tag">New Season 2026</span>
+                <h1>THE KINGS OF<br>THE STREET.</h1>
+                <a href="shop.html" class="btn-gold">Explore Collection</a>
+            </div>
+            <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800" class="slide-img" alt="Shoe 1">
+        </div>
+        <div class="slide">
+            <div class="slide-content">
+                <span class="slide-tag">Elite Corporate</span>
+                <h1>WALK LIKE<br>A BOSS.</h1>
+                <a href="shop.html" class="btn-gold">Shop Corporate</a>
+            </div>
+            <img src="https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=800" class="slide-img" alt="Shoe 2">
+        </div>
+    </section>
+
+    <div class="trust-bar">
+        <div class="trust-item">
+            <h4>NATIONWIDE</h4>
+            <p>Delivery Across Nigeria</p>
+        </div>
+        <div class="trust-item">
+            <h4>100% AUTHENTIC</h4>
+            <p>Guaranteed Quality</p>
+        </div>
+        <div class="trust-item">
+            <h4>24/7 SUPPORT</h4>
+            <p>Order via WhatsApp</p>
+        </div>
+    </div>
+
+    <section class="featured" id="featured">
+        <h2 style="font-family: 'Syne'; font-size: 3rem;">THE VAULT</h2>
+        <div class="grid">
+            <div class="f-card">
+                <h3>URBAN<br>SNKR</h3>
+                <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600">
+            </div>
+            <div class="f-card">
+                <h3>OFFICE<br>ELITE</h3>
+                <img src="https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=600">
+            </div>
+        </div>
+    </section>
+
+    <section class="story">
+        <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800">
+        <div class="story-text">
+            <h2>OUR<br>LEGACY.</h2>
+            <p>From the streets of Lagos to the boardrooms of Abuja, Zapato Kicks is more than a store. It is a movement for those who refuse to blend in.</p>
+            <p>We curate only the rarest silhouettes and the finest leathers, ensuring that when you step out, you make a statement that lasts.</p>
+            <a href="shop.html" style="color: var(--accent); text-decoration: none; font-weight: 800; letter-spacing: 2px;">DISCOVER MORE →</a>
+        </div>
+    </section>
+
+    <footer style="padding: 50px; text-align: center; border-top: 1px solid #111; color: #444; font-size: 0.8rem;">
+        &copy; 2026 ZAPATO KICKS NIGERIA. BUILT FOR THE BOLD.
+    </footer>
+
+    <script>
+        // --- 1. SLIDER LOGIC ---
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 5000);
+
+        // --- 2. SECRET ADMIN LOGIC ---
+        let clicks = 0;
+        document.getElementById('logo').addEventListener('click', (e) => {
+            e.preventDefault();
+            clicks++;
+            if(clicks === 5) {
+                alert("Terminal Unlocked: Redirecting to Admin Dashboard");
+                window.location.href = "admin.html";
+            }
+            setTimeout(() => clicks = 0, 3000);
+        });
+    </script>
+</body>
+</html>
