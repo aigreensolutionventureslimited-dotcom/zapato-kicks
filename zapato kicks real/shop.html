@@ -1,373 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Zapato Kicks | Collection</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Zapato Kicks | Collection</title>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg:#030303;
+  --accent:#c5a059;
+  --text:#ffffff;
+  --border:rgba(255,255,255,0.08);
+}
 
-  <style>
-    :root {
-      --bg: #030303;
-      --accent: #c5a059;
-      --text: #ffffff;
-      --border: rgba(255,255,255,0.08);
-    }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text)}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+nav{
+  position:fixed;top:0;width:100%;
+  padding:18px 5%;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(3,3,3,0.9);backdrop-filter:blur(15px);
+  z-index:1000;border-bottom:1px solid var(--border)
+}
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
+.logo{font-family:'Syne';font-size:1rem;letter-spacing:2px;color:var(--accent)}
+.vault-btn{font-size:.7rem;font-weight:700;background:#fff;color:#000;padding:8px 15px;border-radius:20px;cursor:pointer}
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 18px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(3,3,3,0.9);
-      backdrop-filter: blur(15px);
-      z-index: 1000;
-      border-bottom: 1px solid var(--border);
-    }
+.filters{
+  display:flex;gap:20px;
+  padding:100px 5% 20px;
+  overflow-x:auto;scrollbar-width:none
+}
+.filters::-webkit-scrollbar{display:none}
+.f-btn{background:none;border:none;color:#555;font-size:.7rem;font-weight:700;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.f-btn.active{color:var(--accent)}
 
-    .logo {
-      font-family: 'Syne';
-      font-size: 1rem;
-      letter-spacing: 2px;
-      color: var(--accent);
-    }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  padding:0 5% 100px
+}
 
-    .vault-btn {
-      font-size: 0.7rem;
-      font-weight: 700;
-      background: #fff;
-      color: #000;
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
+.card{cursor:pointer}
+.card img{
+  width:100%;aspect-ratio:1/1.2;
+  object-fit:cover;border-radius:2px;background:#0a0a0a
+}
+.card-name{font-size:.7rem;font-weight:600;margin-top:10px;opacity:.8}
+.card-price{font-size:.85rem;font-weight:700;color:var(--accent)}
 
-    /* FILTERS */
-    .filters {
-      display: flex;
-      gap: 20px;
-      padding: 100px 5% 20px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
+.modal{
+  position:fixed;inset:0;background:#000;
+  z-index:2000;display:none;overflow-y:auto
+}
 
-    .filters::-webkit-scrollbar {
-      display: none;
-    }
+/* SLIDER */
+.slider{overflow:hidden}
+.slider-track{display:flex;transition:.3s ease}
+.slider-track img{width:100%;flex-shrink:0}
 
-    .f-btn {
-      background: none;
-      border: none;
-      color: #555;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+.dots{display:flex;justify-content:center;gap:6px;margin:10px 0}
+.dot{width:6px;height:6px;border-radius:50%;background:#555}
+.dot.active{background:var(--accent)}
 
-    .f-btn.active {
-      color: var(--accent);
-    }
+.details{padding:30px 5% 120px}
 
-    /* GRID */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding: 0 5% 120px;
-    }
+.buy-bar{
+  position:fixed;bottom:0;width:100%;
+  padding:20px 5%;
+  background:rgba(3,3,3,.9);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--border)
+}
 
-    .card {
-      cursor: pointer;
-    }
+.action-btn{
+  background:#fff;color:#000;
+  width:100%;padding:18px;
+  border:none;font-weight:800;border-radius:4px
+}
 
-    .card img {
-      width: 100%;
-      aspect-ratio: 1/1.2;
-      object-fit: cover;
-      border-radius: 2px;
-      background: #0a0a0a;
-    }
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.95);
+  z-index:3000;display:none;padding:40px 5%
+}
 
-    .card-name {
-      font-size: 0.7rem;
-      font-weight: 600;
-      margin-top: 10px;
-      opacity: 0.85;
-    }
+.pay-card{
+  background:#111;padding:25px;
+  border:1px solid var(--border);border-radius:8px
+}
 
-    .card-price {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
+.bank-box{
+  background:#000;padding:20px;
+  border-left:3px solid var(--accent);margin:20px 0
+}
 
-    /* PRODUCT MODAL */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 2000;
-      display: none;
-      overflow-y: auto;
-    }
+.bank-box p{font-size:.8rem;color:#888;margin-bottom:5px}
+.bank-box h4{font-size:1.1rem;letter-spacing:1px}
 
-    .modal-images img {
-      width: 100%;
-      display: block;
-      margin-bottom: 2px;
-    }
+input{
+  width:100%;background:#000;
+  border:1px solid #222;
+  padding:15px;color:#fff;margin-bottom:10px
+}
 
-    .details {
-      padding: 30px 5% 140px;
-    }
-
-    .buy-bar {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      padding: 20px 5%;
-      background: rgba(3,3,3,0.9);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid var(--border);
-    }
-
-    .action-btn {
-      width: 100%;
-      padding: 18px;
-      background: #fff;
-      color: #000;
-      border: none;
-      border-radius: 4px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    /* CHECKOUT */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.95);
-      z-index: 3000;
-      display: none;
-      padding: 40px 5%;
-    }
-
-    .pay-card {
-      background: #111;
-      padding: 25px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-
-    .bank-box {
-      background: #000;
-      padding: 20px;
-      border-left: 3px solid var(--accent);
-      margin: 20px 0;
-    }
-
-    .bank-box p {
-      font-size: 0.8rem;
-      color: #888;
-      margin-bottom: 5px;
-    }
-
-    .bank-box h4 {
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-    }
-
-    input {
-      width: 100%;
-      padding: 15px;
-      background: #000;
-      border: 1px solid #222;
-      color: #fff;
-      margin-bottom: 10px;
-    }
-
-    .cancel {
-      background: none;
-      border: none;
-      color: #555;
-      width: 100%;
-      margin-top: 15px;
-      font-size: 0.7rem;
-      cursor: pointer;
-    }
-  </style>
+/* ZOOM */
+.zoom{
+  position:fixed;inset:0;background:#000;
+  z-index:4000;display:none
+}
+.zoom img{width:100%;height:100%;object-fit:contain}
+</style>
 </head>
 
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="logo">ZAPATO VAULT</div>
-    <div class="vault-btn" onclick="openCheckout()">CHECKOUT (<span id="count">0</span>)</div>
-  </nav>
+<nav>
+  <div class="logo">ZAPATO VAULT</div>
+  <div class="vault-btn" onclick="showVault()">CHECKOUT (<span id="count">0</span>)</div>
+</nav>
 
-  <!-- FILTERS -->
-  <div class="filters">
-    <button class="f-btn active" onclick="filterProducts('All', this)">All</button>
-    <button class="f-btn" onclick="filterProducts('Sneakers', this)">Sneakers</button>
-    <button class="f-btn" onclick="filterProducts('Corporate', this)">Corporate</button>
-    <button class="f-btn" onclick="filterProducts('Palms', this)">Palms</button>
-    <button class="f-btn" onclick="filterProducts('Slides', this)">Slides</button>
-  </div>
+<div class="filters">
+  <button class="f-btn active" onclick="filter('All',this)">All</button>
+  <button class="f-btn" onclick="filter('Sneakers',this)">Sneakers</button>
+  <button class="f-btn" onclick="filter('Corporate',this)">Corporate</button>
+  <button class="f-btn" onclick="filter('Palms',this)">Palms</button>
+  <button class="f-btn" onclick="filter('Slides',this)">Slides</button>
+</div>
 
-  <!-- GRID -->
-  <div class="grid" id="grid"></div>
+<div class="grid" id="grid"></div>
 
-  <!-- PRODUCT MODAL -->
-  <div class="modal" id="productModal">
-    <div id="productContent"></div>
-    <div class="buy-bar" id="productFooter"></div>
-  </div>
+<div id="p-modal" class="modal">
+  <div id="p-content"></div>
+  <div class="buy-bar" id="p-footer"></div>
+</div>
 
-  <!-- CHECKOUT -->
-  <div class="overlay" id="checkoutModal">
-    <h2 style="font-family:'Syne'; margin-bottom:20px;">CHECKOUT</h2>
-    <div class="pay-card">
-      <p style="font-size:0.8rem;">Transfer total amount to:</p>
-
-      <div class="bank-box">
-        <p>Moniepoint MFB</p>
-        <h4>8164082531</h4>
-        <p style="margin-top:10px;">Account Name</p>
-        <h4 style="color:var(--accent);">ZAPATO KICKS</h4>
-      </div>
-
-      <input id="custName" placeholder="Your Full Name">
-      <input id="custAddress" placeholder="Delivery Address">
-
-      <button class="action-btn" onclick="sendOrder()">I HAVE PAID (WHATSAPP)</button>
-      <button class="cancel" onclick="closeCheckout()">CANCEL</button>
+<div id="c-modal" class="overlay">
+  <h2 style="font-family:'Syne';margin-bottom:20px;">CHECKOUT</h2>
+  <div class="pay-card">
+    <p style="font-size:.8rem;">Transfer to:</p>
+    <div class="bank-box">
+      <p>Moniepoint MFB</p>
+      <h4>8164082531</h4>
+      <p>Account Name</p>
+      <h4 style="color:var(--accent)">ZAPATO KICKS</h4>
     </div>
+    <input id="c-name" placeholder="Your Full Name">
+    <input id="c-address" placeholder="Delivery Address">
+    <button class="action-btn" onclick="sendOrder()">I HAVE PAID (WHATSAPP)</button>
+    <button onclick="hideVault()" style="background:none;border:none;color:#555;width:100%;margin-top:15px;font-size:.7rem">CANCEL</button>
   </div>
+</div>
 
-  <script>
-    const supabaseClient = supabase.createClient(
-      'https://rvfuenrggxverrnnmcet.supabase.co',
-      'YOUR_PUBLIC_ANON_KEY'
-    );
+<div class="zoom" id="zoom" onclick="closeZoom()">
+  <img id="zoom-img">
+</div>
 
-    let products = [];
-    let cart = [];
+<script>
+const _supabase = supabase.createClient(
+  'https://rvfuenrggxverrnnmcet.supabase.co',
+  'YOUR_PUBLIC_ANON_KEY'
+);
 
-    async function loadProducts() {
-      const { data } = await supabaseClient
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
+let products=[], cart=[], slideIndex=0;
 
-      products = data || [];
-      renderProducts(products);
-    }
+async function load(){
+  const {data}=await _supabase.from('products').select('*').order('created_at',{ascending:false});
+  products=data; render(data);
+}
 
-    function renderProducts(items) {
-      document.getElementById('grid').innerHTML = items.map((p, i) => `
-        <div class="card" onclick="openProduct(${i})">
-          <img src="${p.image_url.split(',')[0]}">
-          <div class="card-name">${p.name}</div>
-          <div class="card-price">₦${p.price.toLocaleString()}</div>
-        </div>
-      `).join('');
-    }
+function render(items){
+  grid.innerHTML = items.map(p=>`
+    <div class="card" onclick='viewProduct(${JSON.stringify(p).replace(/'/g,"&apos;")})'>
+      <img src="${p.image_url.split(',')[0]}">
+      <div class="card-name">${p.name}</div>
+      <div class="card-price">₦${p.price.toLocaleString()}</div>
+    </div>`).join('');
+}
 
-    function openProduct(index) {
-      const p = products[index];
-      const images = p.image_url.split(',');
+function viewProduct(p){
+  const imgs=p.image_url.split(',');
+  slideIndex=0;
 
-      document.getElementById('productContent').innerHTML = `
-        <div class="modal-images">
-          ${images.map(img => `<img src="${img}">`).join('')}
-        </div>
-        <div class="details">
-          <h1 style="font-family:'Syne';">${p.name}</h1>
-          <p style="color:var(--accent); font-weight:700;">₦${p.price.toLocaleString()}</p>
-        </div>
-      `;
+  p-content.innerHTML=`
+    <div class="slider">
+      <div class="slider-track" id="track">
+        ${imgs.map(i=>`<img src="${i}" onclick="zoomImage('${i}')">`).join('')}
+      </div>
+    </div>
+    <div class="dots">${imgs.map((_,i)=>`<div class="dot ${i==0?'active':''}"></div>`).join('')}</div>
+    <div class="details">
+      <h1 style="font-family:'Syne'">${p.name}</h1>
+      <p style="color:var(--accent);font-weight:700">₦${p.price.toLocaleString()}</p>
+    </div>`;
 
-      document.getElementById('productFooter').innerHTML = `
-        <button class="action-btn" onclick="addToCart(${index})">ADD TO VAULT</button>
-        <button class="cancel" onclick="closeProduct()">CLOSE</button>
-      `;
+  p-footer.innerHTML=`
+    <button class="action-btn" onclick='addToCart(${JSON.stringify(p).replace(/'/g,"&apos;")})'>ADD TO VAULT</button>
+    <button onclick="closeP()" style="background:none;border:none;color:#555;width:100%;margin-top:10px;font-size:.7rem">CLOSE</button>`;
 
-      document.getElementById('productModal').style.display = 'block';
-    }
+  p-modal.style.display='block';
+  initSlider();
+}
 
-    function closeProduct() {
-      document.getElementById('productModal').style.display = 'none';
-    }
+function initSlider(){
+  const track=document.getElementById('track');
+  const dots=document.querySelectorAll('.dot');
+  let startX=0;
 
-    function addToCart(index) {
-      cart.push(products[index]);
-      document.getElementById('count').innerText = cart.length;
-      closeProduct();
-    }
+  track.addEventListener('touchstart',e=>startX=e.touches[0].clientX);
+  track.addEventListener('touchend',e=>{
+    let diff=e.changedTouches[0].clientX-startX;
+    if(diff<-50 && slideIndex<dots.length-1) slideIndex++;
+    if(diff>50 && slideIndex>0) slideIndex--;
+    track.style.transform=`translateX(-${slideIndex*100}%)`;
+    dots.forEach(d=>d.classList.remove('active'));
+    dots[slideIndex].classList.add('active');
+  });
+}
 
-    function openCheckout() {
-      if (!cart.length) return alert('Vault is empty');
-      document.getElementById('checkoutModal').style.display = 'block';
-    }
+function zoomImage(src){ zoom-img.src=src; zoom.style.display='block'; }
+function closeZoom(){ zoom.style.display='none'; }
 
-    function closeCheckout() {
-      document.getElementById('checkoutModal').style.display = 'none';
-    }
+function addToCart(p){ cart.push(p); count.innerText=cart.length; closeP(); }
+function closeP(){ p-modal.style.display='none'; }
 
-    function sendOrder() {
-      const name = custName.value;
-      const address = custAddress.value;
-      if (!name || !address) return alert('Fill all details');
+function showVault(){ cart.length ? c-modal.style.display='block' : alert('Vault is empty'); }
+function hideVault(){ c-modal.style.display='none'; }
 
-      const items = cart.map(i => `- ${i.name}`).join('%0A');
-      const total = cart.reduce((s, i) => s + i.price, 0);
+function sendOrder(){
+  const n=c-name.value,a=c-address.value;
+  if(!n||!a) return alert('Fill details');
+  const items=cart.map(i=>`- ${i.name}`).join('%0A');
+  const total=cart.reduce((s,i)=>s+i.price,0);
+  window.open(`https://wa.me/2349061996801?text=*ZAPATO KICKS ORDER*%0A*Name:* ${n}%0A*Address:* ${a}%0A%0A${items}%0A%0A*Total:* ₦${total.toLocaleString()}`);
+  cart=[];count.innerText=0;hideVault();
+}
 
-      const msg =
-        `*ZAPATO KICKS ORDER*%0A%0A` +
-        `*Name:* ${name}%0A` +
-        `*Address:* ${address}%0A%0A` +
-        `*Items:*%0A${items}%0A%0A` +
-        `*Total:* ₦${total.toLocaleString()}`;
+function filter(cat,btn){
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render(cat==='All'?products:products.filter(p=>p.cat===cat));
+}
 
-      window.open(`https://wa.me/2349061996801?text=${msg}`);
-      cart = [];
-      count.innerText = 0;
-      closeCheckout();
-    }
-
-    function filterProducts(cat, btn) {
-      document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderProducts(cat === 'All' ? products : products.filter(p => p.cat === cat));
-    }
-
-    loadProducts();
-  </script>
+load();
+</script>
 
 </body>
 </html>
